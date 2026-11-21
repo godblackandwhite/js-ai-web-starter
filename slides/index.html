@@ -1,0 +1,697 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>JavaScript & IA: Arquitectura de Aplicaciones Web Cognitivas - Manuel Núñez</title>
+
+    <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Reveal.js CSS via CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reset.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/theme/night.min.css"
+      id="theme"
+    />
+
+    <!-- Highlight.js para bloques de código -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
+    />
+
+    <style>
+      :root {
+        --r-main-font: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+        --r-heading-font: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+        --r-heading-color: #f8fafc;
+        --r-link-color: #38bdf8;
+      }
+
+      /* Fondo Deep Tech / Blueprint de Arquitectura */
+      body {
+        background-color: #070b14 !important;
+        background-image: 
+          radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.12) 0px, transparent 50%),
+          radial-gradient(at 100% 100%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
+          radial-gradient(rgba(148, 163, 184, 0.07) 1px, transparent 1px) !important;
+        background-size: 100% 100%, 100% 100%, 28px 28px !important;
+      }
+
+      .reveal {
+        color: #e2e8f0;
+        font-size: 32px;
+      }
+
+      .reveal .slides section {
+        box-sizing: border-box;
+        padding: 10px 30px !important;
+      }
+
+      .reveal h1,
+      .reveal h2,
+      .reveal h3,
+      .reveal h4 {
+        text-transform: none;
+        letter-spacing: -0.025em;
+        font-weight: 700;
+        margin: 0 0 8px 0;
+      }
+
+      /* Título con Degradado */
+      .gradient-title {
+        background: linear-gradient(135deg, #ffffff 0%, #38bdf8 50%, #818cf8 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      /* Badges de Arquitectura Enterprise */
+      .arch-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px 14px;
+        font-size: 0.42em;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-weight: 700;
+        background: rgba(15, 23, 42, 0.85);
+        color: #38bdf8;
+        border: 1px solid rgba(56, 189, 248, 0.4);
+        border-radius: 999px;
+        box-shadow: 0 0 16px rgba(56, 189, 248, 0.2);
+        backdrop-filter: blur(8px);
+        margin-bottom: 12px;
+      }
+
+      .arch-badge::before {
+        content: "";
+        display: inline-block;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #38bdf8;
+        box-shadow: 0 0 8px #38bdf8;
+      }
+
+      /* Glassmorphism Cards */
+      .glass-card {
+        background: rgba(15, 23, 42, 0.7);
+        backdrop-filter: blur(14px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 14px;
+        box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        padding: 16px 20px;
+        text-align: left;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .glass-card::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.5), transparent);
+      }
+
+      .card-grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+        margin-top: 20px;
+      }
+
+      /* Code Window macOS / IDE Style */
+      .code-window {
+        border-radius: 12px;
+        overflow: hidden;
+        background: #090e1a;
+        border: 1px solid rgba(56, 189, 248, 0.25);
+        box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.8), 0 0 25px rgba(56, 189, 248, 0.1);
+        margin-top: 14px;
+      }
+
+      .code-header {
+        background: #0f172a;
+        padding: 8px 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .window-dots {
+        display: flex;
+        gap: 6px;
+      }
+
+      .dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+      }
+
+      .dot-red { background: #ef4444; }
+      .dot-yellow { background: #f59e0b; }
+      .dot-green { background: #10b981; }
+
+      .file-tag {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.5em;
+        color: #94a3b8;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .reveal pre {
+        margin: 0;
+        width: 100%;
+        box-shadow: none;
+        background: transparent;
+      }
+
+      .reveal code {
+        font-family: "JetBrains Mono", monospace !important;
+        font-size: 0.74em;
+        line-height: 1.45;
+        padding: 14px 18px;
+        background: transparent !important;
+      }
+
+      /* Tech Pill */
+      .tech-pill {
+        display: inline-block;
+        padding: 3px 8px;
+        font-size: 0.55em;
+        font-family: "JetBrains Mono", monospace;
+        background: rgba(56, 189, 248, 0.1);
+        border: 1px solid rgba(56, 189, 248, 0.3);
+        border-radius: 6px;
+        color: #38bdf8;
+      }
+
+      /* Presenter Card */
+      .author-box {
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+        background: rgba(15, 23, 42, 0.75);
+        border: 1px solid rgba(56, 189, 248, 0.25);
+        border-radius: 12px;
+        padding: 10px 20px;
+        margin-top: 24px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      }
+
+      .author-avatar {
+        width: 38px;
+        height: 38px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, #0284c7, #6366f1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        color: #ffffff;
+        font-size: 0.95em;
+        box-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+
+        <!-- SLIDE 1: PORTADA ENTERPRISE -->
+        <section>
+          <div class="arch-badge">
+            Arquitectura de Software & Web Engineering • Charla Técnica
+          </div>
+          <h1 class="gradient-title" style="font-size: 2.1em; line-height: 1.15; margin-bottom: 12px;">
+            JavaScript & el Nuevo Stack de IA
+          </h1>
+          <p style="color: #94a3b8; font-size: 0.8em; max-width: 850px; margin: 0 auto; line-height: 1.4;">
+            De interfaces estáticas a arquitecturas web cognitivas, asíncronas y reactivas en tiempo real
+          </p>
+
+          <div class="author-box">
+            <div class="author-avatar">MN</div>
+            <div style="text-align: left; font-size: 0.55em;">
+              <strong style="color: #f8fafc; font-size: 1.25em;">Manuel Núñez</strong><br />
+              <span style="color: #38bdf8; font-weight: 600;">Software Architect & Especialista Cloud</span>
+              <div style="margin-top: 4px;">
+                <span class="tech-pill">BFF Pattern</span>
+                <span class="tech-pill">Node.js / TS</span>
+                <span class="tech-pill">SSE Streaming</span>
+              </div>
+            </div>
+          </div>
+
+          <aside class="notes">
+            [Minuto 0-2] Bienvenida. Hoy la web evolucionó de formularios estáticos a flujos conversacionales y streaming de tokens. Demostraremos que JavaScript es el lenguaje ideal para arquitecturas cognitivas de punta a punta.
+          </aside>
+        </section>
+
+        <!-- SLIDE 2: CAMBIO DE PARADIGMA (3 CARDS BLUEPRINT) -->
+        <section>
+          <div class="arch-badge">Fundamentos de Arquitectura</div>
+          <h2>El Cambio de Paradigma en la Web</h2>
+          <p style="font-size: 0.65em; color: #94a3b8; margin-bottom: 10px;">
+            Evolución de modelos deterministas hacia sistemas probabilísticos de streaming
+          </p>
+
+          <div class="card-grid-3">
+            <div class="glass-card fragment">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+                <span style="font-size: 1.2em;">📋</span>
+                <h4 style="color: #94a3b8; margin: 0; font-size: 0.9em;">Web Clásica (CRUD)</h4>
+              </div>
+              <ul style="font-size: 0.58em; line-height: 1.6; color: #cbd5e1; padding-left: 16px; margin: 0;">
+                <li>Inputs deterministas y formularios rígidos.</li>
+                <li>Ciclo síncrono Request / Response.</li>
+                <li>Procesamiento por lotes y bloqueo de UI.</li>
+              </ul>
+            </div>
+
+            <div class="glass-card fragment" style="border-color: rgba(56, 189, 248, 0.4);">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+                <span style="font-size: 1.2em;">⚡</span>
+                <h4 style="color: #38bdf8; margin: 0; font-size: 0.9em;">Web Asistida por IA</h4>
+              </div>
+              <ul style="font-size: 0.58em; line-height: 1.6; color: #cbd5e1; padding-left: 16px; margin: 0;">
+                <li>Lenguaje natural e inyección de contexto.</li>
+                <li>Respuestas probabilísticas generativas.</li>
+                <li>Flujos continuos en tiempo real (Tokens).</li>
+              </ul>
+            </div>
+
+            <div class="glass-card fragment" style="border-color: rgba(129, 140, 248, 0.4);">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+                <span style="font-size: 1.2em;">🚀</span>
+                <h4 style="color: #a5b4fc; margin: 0; font-size: 0.9em;">¿Por qué JavaScript?</h4>
+              </div>
+              <ul style="font-size: 0.58em; line-height: 1.6; color: #cbd5e1; padding-left: 16px; margin: 0;">
+                <li><strong>Event Loop:</strong> I/O no bloqueante nativo.</li>
+                <li><strong>Full-Stack:</strong> Mismo modelo cliente/servidor.</li>
+                <li><strong>Web Streams:</strong> Pipes de bytes nativos.</li>
+              </ul>
+            </div>
+          </div>
+
+          <aside class="notes">
+            [Minuto 2-4] No es necesario reescribir todo en Python. El runtime de Node y las APIs nativas del navegador están concebidos específicamente para procesar flujos asíncronos y eventos concurrentes.
+          </aside>
+        </section>
+
+        <!-- SLIDE 3: ANTI-PATRON VS PATRON BFF -->
+        <section>
+          <div class="arch-badge">Seguridad & Desacoplamiento</div>
+          <h2>Arquitectura: Más Allá de un <code>fetch()</code></h2>
+          <p style="font-size: 0.65em; color: #94a3b8; margin-bottom: 10px;">
+            El error común en desarrollo web vs el patrón de arquitectura enterprise
+          </p>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 18px; text-align: left; font-size: 0.65em;">
+            <!-- Anti-Patrón -->
+            <div style="background: rgba(239, 68, 68, 0.06); border: 2px solid rgba(239, 68, 68, 0.45); border-radius: 14px; padding: 18px; box-shadow: 0 12px 30px rgba(239, 68, 68, 0.1);" class="fragment">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+                <span style="font-size: 1.2em;">❌</span>
+                <h4 style="color: #f87171; margin: 0; font-size: 1.05em;">Anti-Patrón: Llamada Directa</h4>
+              </div>
+              <ul style="line-height: 1.7; color: #fecaca; padding-left: 18px; margin: 0;">
+                <li><strong>API Keys expuestas:</strong> Visibles en DevTools y bundle cliente.</li>
+                <li><strong>Cero control de costos:</strong> Sin rate limiting ni cuotas.</li>
+                <li><strong>Prompt Injection:</strong> Lógica de sistema manipulable.</li>
+                <li><strong>Fuerte Acoplamiento:</strong> Dependencia directa al vendor.</li>
+              </ul>
+            </div>
+
+            <!-- Patrón BFF -->
+            <div style="background: rgba(56, 189, 248, 0.06); border: 2px solid rgba(56, 189, 248, 0.45); border-radius: 14px; padding: 18px; box-shadow: 0 12px 30px rgba(56, 189, 248, 0.1);" class="fragment">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+                <span style="font-size: 1.2em;">🛡️</span>
+                <h4 style="color: #38bdf8; margin: 0; font-size: 1.05em;">Solución: Patrón BFF en Node.js</h4>
+              </div>
+              <ul style="line-height: 1.7; color: #bae6fd; padding-left: 18px; margin: 0;">
+                <li><strong>Zero-Leak:</strong> Secretos protegidos en variables de entorno.</li>
+                <li><strong>Control de Tráfico:</strong> Rate limiting, caché y validación.</li>
+                <li><strong>Streaming Eficiente:</strong> Retransmisión token a token vía <strong>SSE</strong>.</li>
+                <li><strong>Vendor Agnostic:</strong> Libertad de alternar modelos LLM.</li>
+              </ul>
+            </div>
+          </div>
+
+          <aside class="notes">
+            [Minuto 4-5.5] El rol del arquitecto es garantizar seguridad y gobernanza. Conectar el browser directo al LLM es negligente. El BFF actúa como aduana, orquestador y optimizador de costos.
+          </aside>
+        </section>
+
+        <!-- SLIDE 4: DIAGRAMA DE ARQUITECTURA END-TO-END -->
+        <section>
+          <div class="arch-badge" style="margin-bottom: 8px;">Blueprint del Sistema</div>
+          <h2 style="font-size: 1.7em; margin-bottom: 4px;">Arquitectura de la Solución (BFF + SSE)</h2>
+          <p style="font-size: 0.6em; color: #94a3b8; margin-bottom: 14px;">
+            Flujo end-to-end desacoplado: Browser SPA ⇄ Backend for Frontend (Node.js & TS) ⇄ Motor de IA
+          </p>
+
+          <div style="width: 100%; display: flex; justify-content: center; align-items: center;">
+            <svg viewBox="0 0 920 260" style="width: 90%; max-height: 420px; font-family: inherit; filter: drop-shadow(0 15px 35px rgba(0,0,0,0.8));">
+              <defs>
+                <marker id="m-cyan" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path d="M 0 1 L 8 5 L 0 9 z" fill="#38bdf8" />
+                </marker>
+                <marker id="m-emerald" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path d="M 0 1 L 8 5 L 0 9 z" fill="#34d399" />
+                </marker>
+                <marker id="m-slate" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path d="M 0 1 L 8 5 L 0 9 z" fill="#94a3b8" />
+                </marker>
+              </defs>
+
+              <!-- NODO 1: CLIENTE (BROWSER) -->
+              <rect x="10" y="10" width="260" height="235" rx="12" fill="#0b1120" stroke="#38bdf8" stroke-width="2" />
+              <rect x="10" y="10" width="260" height="38" rx="12" fill="#1e293b" />
+              <rect x="10" y="38" width="260" height="10" fill="#1e293b" />
+              <text x="140" y="32" fill="#38bdf8" font-size="13" font-weight="bold" text-anchor="middle">CAPA CLIENTE (Browser)</text>
+              <text x="140" y="44" fill="#94a3b8" font-size="9" text-anchor="middle">Single Page Application / Vanilla JS</text>
+              
+              <g font-size="10.5" fill="#cbd5e1" text-anchor="start">
+                <text x="25" y="76">• Interfaz de Chat Adaptativa</text>
+                <text x="25" y="102">• Web Streams API (fetch + reader)</text>
+                <text x="25" y="128">• TextDecoder (Chunks asíncronos)</text>
+                <text x="25" y="154">• Renderizado Progresivo (Tokens)</text>
+                <text x="25" y="180">• Seguridad DOM (Anti-XSS)</text>
+                <text x="25" y="206" fill="#38bdf8" font-weight="bold">• TTFT Óptimo (~300ms)</text>
+              </g>
+
+              <!-- FLUJOS CLIENTE ⇄ BFF -->
+              <path d="M 275 75 L 345 75" stroke="#94a3b8" stroke-width="2" marker-end="url(#m-slate)" />
+              <text x="310" y="65" fill="#94a3b8" font-size="8.5" font-weight="bold" text-anchor="middle">POST /api/chat</text>
+              <text x="310" y="90" fill="#64748b" font-size="7.5" text-anchor="middle">{ prompt }</text>
+
+              <path d="M 345 165 L 275 165" stroke="#38bdf8" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#m-cyan)" />
+              <text x="310" y="155" fill="#38bdf8" font-size="8.5" font-weight="bold" text-anchor="middle">SSE Stream</text>
+              <text x="310" y="180" fill="#38bdf8" font-size="7.5" text-anchor="middle">text/event-stream</text>
+
+              <!-- NODO 2: BFF NODE/TS -->
+              <rect x="350" y="10" width="270" height="235" rx="12" fill="#0b1120" stroke="#818cf8" stroke-width="2" />
+              <rect x="350" y="10" width="270" height="38" rx="12" fill="#1e293b" />
+              <rect x="350" y="38" width="270" height="10" fill="#1e293b" />
+              <text x="485" y="32" fill="#a5b4fc" font-size="13" font-weight="bold" text-anchor="middle">CAPA BFF (Node.js & TS)</text>
+              <text x="485" y="44" fill="#94a3b8" font-size="9" text-anchor="middle">Backend for Frontend • Gateway</text>
+
+              <g font-size="10.5" fill="#cbd5e1" text-anchor="start">
+                <text x="365" y="76">• Auth & Control de Rate Limiting</text>
+                <text x="365" y="102">• Llaves de API Protegidas (Zero-Leak)</text>
+                <text x="365" y="128">• Orquestación & Context Injection</text>
+                <text x="365" y="154">• Transformador SSE (data: chunk)</text>
+                <text x="365" y="180">• Detección desconexión (req.close)</text>
+                <text x="365" y="206" fill="#a5b4fc" font-weight="bold">• Graceful Shutdown & Health</text>
+              </g>
+
+              <!-- FLUJOS BFF ⇄ MODELO -->
+              <path d="M 625 75 L 695 75" stroke="#94a3b8" stroke-width="2" marker-end="url(#m-slate)" />
+              <text x="660" y="65" fill="#94a3b8" font-size="8.5" font-weight="bold" text-anchor="middle">SDK Inferencia</text>
+              <text x="660" y="90" fill="#64748b" font-size="7.5" text-anchor="middle">Prompt enriquecido</text>
+
+              <path d="M 695 165 L 625 165" stroke="#34d399" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#m-emerald)" />
+              <text x="660" y="155" fill="#34d399" font-size="8.5" font-weight="bold" text-anchor="middle">Async Chunks</text>
+              <text x="660" y="180" fill="#34d399" font-size="7.5" text-anchor="middle">for await...of</text>
+
+              <!-- NODO 3: MODELO IA -->
+              <rect x="700" y="10" width="210" height="235" rx="12" fill="#0b1120" stroke="#34d399" stroke-width="2" />
+              <rect x="700" y="10" width="210" height="38" rx="12" fill="#1e293b" />
+              <rect x="700" y="38" width="210" height="10" fill="#1e293b" />
+              <text x="805" y="32" fill="#34d399" font-size="13" font-weight="bold" text-anchor="middle">CAPA INFERENCIA</text>
+              <text x="805" y="44" fill="#94a3b8" font-size="9" text-anchor="middle">Modelo de Lenguaje / LLM</text>
+
+              <g font-size="10.5" fill="#cbd5e1" text-anchor="start">
+                <text x="715" y="76">• Motor de Inferencia</text>
+                <text x="715" y="102">• Cómputo No Bloqueante</text>
+                <text x="715" y="128">• Generación Probabilística</text>
+                <text x="715" y="154">• Emisión Token a Token</text>
+                <text x="715" y="180">• Conexión HTTP/2 / gRPC</text>
+                <text x="715" y="206" fill="#34d399" font-weight="bold">• Tokens Asíncronos</text>
+              </g>
+            </svg>
+          </div>
+
+          <aside class="notes">
+            [Minuto 5.5-7] Recorrer visualmente las 3 capas: Cliente que consume Web Streams sin librerías pesadas, BFF que protege credenciales y transforma el stream a SSE, y Capa de Inferencia que emite tokens en tiempo real.
+          </aside>
+        </section>
+
+        <!-- SLIDE 5: METRICAS Y STREAMING (TTFT BENCHMARK) -->
+        <section>
+          <div class="arch-badge">Performance & UX Engineering</div>
+          <h2>La Importancia del Streaming (TTFT)</h2>
+          <p style="font-size: 0.65em; color: #94a3b8; margin-bottom: 10px;">
+            <strong>Time To First Token (TTFT):</strong> La métrica de oro en arquitecturas cognitivas
+          </p>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 18px; text-align: left;">
+            <!-- Benchmark Bloqueante -->
+            <div class="glass-card fragment" style="border-color: rgba(239, 68, 68, 0.45);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <span style="font-size: 0.62em; color: #f87171; font-weight: 700; text-transform: uppercase;">Request / Response Tradicional</span>
+                <span class="tech-pill" style="border-color: #ef4444; color: #ef4444;">~6000ms</span>
+              </div>
+              <div style="background: rgba(255, 255, 255, 0.05); height: 7px; border-radius: 4px; overflow: hidden; margin-bottom: 12px;">
+                <div style="background: #ef4444; width: 100%; height: 100%;"></div>
+              </div>
+              <ul style="font-size: 0.58em; line-height: 1.6; color: #cbd5e1; padding-left: 16px; margin: 0;">
+                <li>Usuario espera inmóvil frente a un spinner vacío.</li>
+                <li>Alto riesgo de timeout y abandono de sesión.</li>
+                <li>Percepción de lentitud extrema.</li>
+              </ul>
+            </div>
+
+            <!-- Benchmark Streaming -->
+            <div class="glass-card fragment" style="border-color: rgba(56, 189, 248, 0.45);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <span style="font-size: 0.62em; color: #38bdf8; font-weight: 700; text-transform: uppercase;">Streaming con Server-Sent Events</span>
+                <span class="tech-pill" style="border-color: #38bdf8; color: #38bdf8;">~300ms ⚡</span>
+              </div>
+              <div style="background: rgba(255, 255, 255, 0.05); height: 7px; border-radius: 4px; overflow: hidden; margin-bottom: 12px;">
+                <div style="background: linear-gradient(90deg, #38bdf8, #34d399); width: 8%; height: 100%;"></div>
+              </div>
+              <ul style="font-size: 0.58em; line-height: 1.6; color: #cbd5e1; padding-left: 16px; margin: 0;">
+                <li>Primeros tokens aparecen casi de inmediato.</li>
+                <li><strong>SSE:</strong> Estándar HTTP ligero, sin sobrecarga de sockets.</li>
+                <li>Pasa transparente por proxies, CDNs y firewalls.</li>
+              </ul>
+            </div>
+          </div>
+
+          <aside class="notes">
+            [Minuto 7-10] En sistemas con LLMs, la latencia de inferencia completa puede rondar 5 a 10 segundos. Si envías un JSON estático, la UX es pésima. Si usas SSE, el usuario lee al instante a los 300ms.
+          </aside>
+        </section>
+
+        <!-- SLIDE 6: BACKEND CODE ENMARCADO IDE -->
+        <section>
+          <div class="arch-badge">Implementación Backend</div>
+          <h3 style="margin-bottom: 4px;">Streaming con Express & TypeScript</h3>
+          <p style="font-size: 0.6em; color: #94a3b8; margin-bottom: 10px;">
+            Control de cabeceras HTTP, flujo asíncrono y delimitador SSE estándar
+          </p>
+
+          <div class="code-window">
+            <div class="code-header">
+              <div class="window-dots">
+                <div class="dot dot-red"></div>
+                <div class="dot dot-yellow"></div>
+                <div class="dot dot-green"></div>
+              </div>
+              <div class="file-tag">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                server/index.ts
+              </div>
+              <span class="tech-pill">TypeScript</span>
+            </div>
+            <pre><code class="language-typescript" data-trim data-line-numbers="1-4|7-12|14-16">
+// 1. Headers obligatorios para Server-Sent Events (SSE)
+res.setHeader('Content-Type', 'text/event-stream');
+res.setHeader('Cache-Control', 'no-cache, no-transform');
+res.setHeader('Connection', 'keep-alive');
+
+// 2. Iteramos sobre los chunks asíncronos del modelo
+for await (const chunk of aiStream) {
+  const payload = JSON.stringify({ text: chunk.text });
+  res.write(`data: ${payload}\n\n`); // Protocolo SSE: data: <json>\n\n
+}
+
+// 3. Señal de finalización limpia
+res.write('data: [DONE]\n\n');
+res.end();
+            </code></pre>
+          </div>
+
+          <aside class="notes">
+            [Minuto 10-12] Observen la simplicidad arquitectónica: 3 headers estándar, el bucle for await que no satura memoria, y el protocolo de eventos data: terminando con [DONE].
+          </aside>
+        </section>
+
+        <!-- SLIDE 7: FRONTEND CODE ENMARCADO IDE -->
+        <section>
+          <div class="arch-badge">Implementación Frontend</div>
+          <h3 style="margin-bottom: 4px;">Consumiendo Web Streams Nativos</h3>
+          <p style="font-size: 0.6em; color: #94a3b8; margin-bottom: 10px;">
+            Cero dependencias pesadas: lectura nativa con <code>ReadableStream</code> y <code>TextDecoder</code>
+          </p>
+
+          <div class="code-window">
+            <div class="code-header">
+              <div class="window-dots">
+                <div class="dot dot-red"></div>
+                <div class="dot dot-yellow"></div>
+                <div class="dot dot-green"></div>
+              </div>
+              <div class="file-tag">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                public/app.js
+              </div>
+              <span class="tech-pill">Web Streams API</span>
+            </div>
+            <pre><code class="language-javascript" data-trim data-line-numbers="1-3|5-11">
+const response = await fetch('/api/chat', { method: 'POST', body });
+const reader = response.body.getReader();
+const decoder = new TextDecoder();
+
+while (true) {
+  const { value, done } = await reader.read();
+  if (done) break;
+  
+  const chunk = decoder.decode(value, { stream: true });
+  renderTokenInUI(chunk); // Renderizado progresivo sin bloquear el hilo principal
+}
+            </code></pre>
+          </div>
+
+          <aside class="notes">
+            [Minuto 12-14] Cero librerías externas de 500kb en el cliente. El browser moderno lee flujos binarios con getReader() y TextDecoder nativos.
+          </aside>
+        </section>
+
+        <!-- SLIDE 8: DEMO WALKTHROUGH ESTILIZADA -->
+        <section>
+          <div class="arch-badge">Live Engineering</div>
+          <h2 class="gradient-title" style="margin-bottom: 4px;">Demostración en Vivo</h2>
+          <p style="font-size: 0.65em; color: #94a3b8; margin-bottom: 14px;">
+            Revisemos la arquitectura completa en ejecución local y en contenedor Docker
+          </p>
+
+          <div class="code-window" style="max-width: 650px; margin: 10px auto 0 auto;">
+            <div class="code-header">
+              <div class="window-dots">
+                <div class="dot dot-red"></div>
+                <div class="dot dot-yellow"></div>
+                <div class="dot dot-green"></div>
+              </div>
+              <div class="file-tag">bash • terminal</div>
+              <span class="tech-pill" style="color: #4ade80; border-color: #4ade80;">ready</span>
+            </div>
+            <div style="padding: 16px 20px; font-family: 'JetBrains Mono', monospace; font-size: 0.58em; line-height: 1.7; text-align: left; color: #e2e8f0;">
+              <span style="color: #94a3b8;"># 1. Clonar y desplegar con Docker</span><br />
+              <span style="color: #38bdf8;">$</span> docker compose up --build<br /><br />
+              <span style="color: #94a3b8;"># 2. Servidor listo en producción</span><br />
+              <span style="color: #4ade80;">✔ Container js-ai-web-starter Started</span><br />
+              <span style="color: #38bdf8;">>> Chat App:</span> http://localhost:3000<br />
+              <span style="color: #a5b4fc;">>> Slides:</span> http://localhost:3000/slides
+            </div>
+          </div>
+
+          <aside class="notes">
+            [Minuto 14-18] Cambiar a VS Code y al navegador. Mostrar el chat, lanzar una consulta y abrir las DevTools (pestaña Network -> EventStream) para que el público vea los eventos SSE llegar token a token en tiempo real.
+          </aside>
+        </section>
+
+        <!-- SLIDE 9: CONCLUSIONES / TAKEAWAYS ENTERPRISE -->
+        <section>
+          <div class="arch-badge">Principios de Ingeniería</div>
+          <h2 style="margin-bottom: 4px;">3 Conclusiones para Arquitectos</h2>
+          <p style="font-size: 0.6em; color: #94a3b8; margin-bottom: 12px;">
+            Pilares fundamentales para diseñar sistemas web con IA generativa
+          </p>
+
+          <div class="card-grid-3" style="margin-top: 14px;">
+            <div class="glass-card fragment">
+              <span style="font-size: 1.2em; color: #38bdf8; font-weight: 800; display: block; margin-bottom: 6px;">01</span>
+              <h4 style="color: #f8fafc; font-size: 0.8em; margin-bottom: 8px;">Aprovecha tu Stack</h4>
+              <p style="font-size: 0.55em; line-height: 1.5; color: #94a3b8; margin: 0;">
+                TypeScript y Node.js son ciudadanos de primera clase en IA por su modelo asíncrono no bloqueante.
+              </p>
+            </div>
+
+            <div class="glass-card fragment">
+              <span style="font-size: 1.2em; color: #818cf8; font-weight: 800; display: block; margin-bottom: 6px;">02</span>
+              <h4 style="color: #f8fafc; font-size: 0.8em; margin-bottom: 8px;">Diseña Asíncrono</h4>
+              <p style="font-size: 0.55em; line-height: 1.5; color: #94a3b8; margin: 0;">
+                Minimiza el TTFT con Server-Sent Events (SSE) y Web Streams para crear interfaces reactivas.
+              </p>
+            </div>
+
+            <div class="glass-card fragment">
+              <span style="font-size: 1.2em; color: #34d399; font-weight: 800; display: block; margin-bottom: 6px;">03</span>
+              <h4 style="color: #f8fafc; font-size: 0.8em; margin-bottom: 8px;">Gobernanza & BFF</h4>
+              <p style="font-size: 0.55em; line-height: 1.5; color: #94a3b8; margin: 0;">
+                Aísla tus secretos, controla costos y valida prompts siempre desde una capa de backend segura.
+              </p>
+            </div>
+          </div>
+
+          <div style="margin-top: 28px; font-size: 0.7em;">
+            <strong style="color: #f8fafc;">¡Muchas gracias!</strong><br />
+            <span style="color: #38bdf8; font-family: 'JetBrains Mono', monospace; font-size: 0.8em;">https://github.com/godblackandwhite/js-ai-web-starter</span>
+          </div>
+
+          <aside class="notes">
+            [Minuto 18-20] Resumen final de arquitectura, compartir enlaces del repositorio y abrir ronda de preguntas del público.
+          </aside>
+        </section>
+
+      </div>
+    </div>
+
+    <!-- Reveal.js & Plugins JS via CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/notes/notes.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/highlight/highlight.min.js"></script>
+    <script>
+      Reveal.initialize({
+        width: 1280,
+        height: 720,
+        margin: 0.04,
+        minScale: 0.2,
+        maxScale: 2.0,
+        center: true,
+        hash: true,
+        slideNumber: "c/t",
+        transition: "slide",
+        plugins: [RevealHighlight, RevealNotes],
+      });
+    </script>
+  </body>
+</html>

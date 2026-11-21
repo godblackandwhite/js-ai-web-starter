@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Asistente IA con JavaScript & Arquitectura</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body
+    class="bg-slate-900 text-slate-100 flex flex-col h-screen justify-between p-4 md:p-6"
+  >
+    <header
+      class="max-w-3xl mx-auto w-full flex items-center justify-between py-4 border-b border-slate-800"
+    >
+      <div>
+        <h1 class="text-xl md:text-2xl font-bold text-cyan-400">
+          Asistente Web con JavaScript & IA
+        </h1>
+        <p class="text-xs md:text-sm text-slate-400">
+          Demostración técnica en tiempo real (BFF + Streaming SSE)
+        </p>
+      </div>
+      <div class="flex items-center gap-2">
+        <button
+          id="btn-arch"
+          type="button"
+          class="text-xs md:text-sm bg-slate-800 hover:bg-slate-700 text-indigo-400 border border-slate-700 px-3 py-1.5 rounded-lg transition inline-flex items-center gap-1.5 font-medium"
+        >
+          <span>📐 Arquitectura</span>
+        </button>
+        <a
+          href="/slides"
+          target="_blank"
+          class="text-xs md:text-sm bg-slate-800 hover:bg-slate-700 text-cyan-400 border border-slate-700 px-3 py-1.5 rounded-lg transition inline-flex items-center gap-1.5 font-medium"
+        >
+          <span>Diapositivas</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+          </svg>
+        </a>
+      </div>
+    </header>
+
+    <main
+      id="chat-container"
+      class="max-w-3xl mx-auto w-full flex-1 overflow-y-auto my-4 space-y-4 p-4 bg-slate-800/50 rounded-xl border border-slate-700 shadow-inner"
+    >
+      <div id="initial-hint" class="text-slate-400 text-center italic py-8">
+        Escribe un mensaje abajo para iniciar el streaming en vivo...
+      </div>
+    </main>
+
+    <footer class="max-w-3xl mx-auto w-full">
+      <form id="chat-form" class="flex gap-2">
+        <input
+          type="text"
+          id="prompt-input"
+          placeholder="Pregúntale algo al asistente..."
+          class="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-4 py-2.5 focus:outline-none focus:border-cyan-400 text-slate-100 disabled:opacity-50 transition"
+          required
+          autocomplete="off"
+        />
+        <button
+          type="submit"
+          id="send-btn"
+          class="bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold px-5 py-2.5 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Enviar
+        </button>
+      </form>
+    </footer>
+
+    <!-- MODAL DE ARQUITECTURA DE LA SOLUCIÓN -->
+    <div
+      id="arch-modal"
+      class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4"
+    >
+      <div
+        class="bg-slate-900 border border-slate-700 rounded-2xl max-w-4xl w-full p-6 shadow-2xl overflow-y-auto max-h-[90vh]"
+      >
+        <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+          <div>
+            <h2 class="text-lg md:text-xl font-bold text-slate-100">
+              Gráfico de Arquitectura de la Solución
+            </h2>
+            <p class="text-xs text-slate-400">
+              Patrón Backend for Frontend (BFF) + Server-Sent Events (SSE)
+            </p>
+          </div>
+          <button
+            id="close-modal"
+            class="text-slate-400 hover:text-slate-100 p-2 rounded-lg hover:bg-slate-800 transition"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="py-4">
+          <svg viewBox="0 0 920 270" class="w-full h-auto drop-shadow-lg">
+            <defs>
+              <marker id="m-arrow-cyan" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1 L 8 5 L 0 9 z" fill="#38bdf8" />
+              </marker>
+              <marker id="m-arrow-emerald" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1 L 8 5 L 0 9 z" fill="#34d399" />
+              </marker>
+              <marker id="m-arrow-slate" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1 L 8 5 L 0 9 z" fill="#94a3b8" />
+              </marker>
+            </defs>
+
+            <!-- NODO 1: CLIENTE -->
+            <rect x="10" y="15" width="260" height="240" rx="12" fill="#0f172a" stroke="#38bdf8" stroke-width="2" />
+            <rect x="10" y="15" width="260" height="42" rx="12" fill="#1e293b" />
+            <rect x="10" y="45" width="260" height="12" fill="#1e293b" />
+            <text x="140" y="38" fill="#38bdf8" font-size="14" font-weight="bold" text-anchor="middle">CAPA CLIENTE (Browser)</text>
+            <text x="140" y="52" fill="#94a3b8" font-size="10" text-anchor="middle">SPA / Vanilla JS + Tailwind</text>
+            
+            <g font-size="11" fill="#cbd5e1" text-anchor="start">
+              <text x="25" y="85">• Interfaz de Chat Adaptativa</text>
+              <text x="25" y="112">• Web Streams API (fetch + getReader)</text>
+              <text x="25" y="139">• TextDecoder (Chunks asíncronos)</text>
+              <text x="25" y="166">• Renderizado Token a Token</text>
+              <text x="25" y="193">• Seguridad DOM (Prevención XSS)</text>
+              <text x="25" y="220" fill="#38bdf8">• TTFT Óptimo (~300ms)</text>
+            </g>
+
+            <!-- FLUJOS CLIENTE - BFF -->
+            <path d="M 275 80 L 345 80" stroke="#94a3b8" stroke-width="2" marker-end="url(#m-arrow-slate)" />
+            <text x="310" y="70" fill="#94a3b8" font-size="9" font-weight="bold" text-anchor="middle">POST /api/chat</text>
+            <text x="310" y="96" fill="#64748b" font-size="8" text-anchor="middle">{ prompt }</text>
+
+            <path d="M 345 175 L 275 175" stroke="#38bdf8" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#m-arrow-cyan)" />
+            <text x="310" y="165" fill="#38bdf8" font-size="9" font-weight="bold" text-anchor="middle">SSE Stream</text>
+            <text x="310" y="192" fill="#38bdf8" font-size="8" text-anchor="middle">text/event-stream</text>
+
+            <!-- NODO 2: BFF NODE/TS -->
+            <rect x="350" y="15" width="270" height="240" rx="12" fill="#0f172a" stroke="#818cf8" stroke-width="2" />
+            <rect x="350" y="15" width="270" height="42" rx="12" fill="#1e293b" />
+            <rect x="350" y="45" width="270" height="12" fill="#1e293b" />
+            <text x="485" y="38" fill="#a5b4fc" font-size="14" font-weight="bold" text-anchor="middle">CAPA BFF (Node.js & TS)</text>
+            <text x="485" y="52" fill="#94a3b8" font-size="10" text-anchor="middle">Backend for Frontend • Gateway</text>
+
+            <g font-size="11" fill="#cbd5e1" text-anchor="start">
+              <text x="365" y="85">• Auth & Control de Rate Limiting</text>
+              <text x="365" y="112">• Llaves de API Protegidas (Zero-Leak)</text>
+              <text x="365" y="139">• Orquestación & Context Injection</text>
+              <text x="365" y="166">• Transformador SSE (data: chunk)</text>
+              <text x="365" y="193">• Detección desconexión (req.close)</text>
+              <text x="365" y="220" fill="#a5b4fc">• Graceful Shutdown & Health Check</text>
+            </g>
+
+            <!-- FLUJOS BFF - MODELO -->
+            <path d="M 625 80 L 695 80" stroke="#94a3b8" stroke-width="2" marker-end="url(#m-arrow-slate)" />
+            <text x="660" y="70" fill="#94a3b8" font-size="9" font-weight="bold" text-anchor="middle">SDK Inferencia</text>
+            <text x="660" y="96" fill="#64748b" font-size="8" text-anchor="middle">Prompt enriquecido</text>
+
+            <path d="M 695 175 L 625 175" stroke="#34d399" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#m-arrow-emerald)" />
+            <text x="660" y="165" fill="#34d399" font-size="9" font-weight="bold" text-anchor="middle">Async Chunks</text>
+            <text x="660" y="192" fill="#34d399" font-size="8" text-anchor="middle">for await...of</text>
+
+            <!-- NODO 3: MODELO IA -->
+            <rect x="700" y="15" width="210" height="240" rx="12" fill="#0f172a" stroke="#34d399" stroke-width="2" />
+            <rect x="700" y="15" width="210" height="42" rx="12" fill="#1e293b" />
+            <rect x="700" y="45" width="210" height="12" fill="#1e293b" />
+            <text x="805" y="38" fill="#34d399" font-size="14" font-weight="bold" text-anchor="middle">CAPA INFERENCIA</text>
+            <text x="805" y="52" fill="#94a3b8" font-size="10" text-anchor="middle">Modelo de Lenguaje / LLM</text>
+
+            <g font-size="11" fill="#cbd5e1" text-anchor="start">
+              <text x="715" y="85">• Motor de Inferencia</text>
+              <text x="715" y="112">• Computación en GPU/TPU</text>
+              <text x="715" y="139">• Generación Probabilística</text>
+              <text x="715" y="166">• Emisión Token a Token</text>
+              <text x="715" y="193">• Conexión HTTP/2 / gRPC</text>
+              <text x="715" y="220" fill="#34d399">• Streaming No Bloqueante</text>
+            </g>
+          </svg>
+        </div>
+
+        <div class="mt-4 pt-4 border-t border-slate-800 flex justify-end">
+          <button
+            id="close-modal-btn"
+            class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-4 py-2 rounded-lg text-sm transition"
+          >
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const form = document.getElementById("chat-form");
+      const input = document.getElementById("prompt-input");
+      const sendBtn = document.getElementById("send-btn");
+      const container = document.getElementById("chat-container");
+      const initialHint = document.getElementById("initial-hint");
+
+      // Modal de Arquitectura
+      const archModal = document.getElementById("arch-modal");
+      const btnArch = document.getElementById("btn-arch");
+      const closeModal = document.getElementById("close-modal");
+      const closeModalBtn = document.getElementById("close-modal-btn");
+
+      const toggleModal = (show) => {
+        archModal.classList.toggle("hidden", !show);
+      };
+
+      btnArch.addEventListener("click", () => toggleModal(true));
+      closeModal.addEventListener("click", () => toggleModal(false));
+      closeModalBtn.addEventListener("click", () => toggleModal(false));
+      archModal.addEventListener("click", (e) => {
+        if (e.target === archModal) toggleModal(false);
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && !archModal.classList.contains("hidden")) {
+          toggleModal(false);
+        }
+      });
+
+      function appendMessage(sender, text, isBot = false) {
+        if (initialHint && initialHint.parentNode) {
+          initialHint.remove();
+        }
+
+        const msgDiv = document.createElement("div");
+        msgDiv.className = isBot
+          ? "p-3 bg-slate-800 rounded-lg mr-8 border border-slate-700 text-slate-100"
+          : "p-3 bg-slate-700/80 rounded-lg ml-8 text-right text-slate-100";
+
+        const label = document.createElement("strong");
+        label.textContent = sender + ": ";
+        label.className = isBot ? "text-cyan-400" : "text-slate-300";
+
+        const contentSpan = document.createElement("span");
+        contentSpan.className = "content leading-relaxed";
+        contentSpan.textContent = text;
+
+        msgDiv.appendChild(label);
+        msgDiv.appendChild(contentSpan);
+        container.appendChild(msgDiv);
+        container.scrollTop = container.scrollHeight;
+
+        return contentSpan;
+      }
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const text = input.value.trim();
+        if (!text) return;
+
+        input.value = "";
+        input.disabled = true;
+        sendBtn.disabled = true;
+
+        appendMessage("Tú", text, false);
+        const contentSpan = appendMessage("IA", "", true);
+
+        try {
+          const response = await fetch("/api/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ prompt: text }),
+          });
+
+          if (!response.ok) {
+            const errData = await response.json().catch(() => ({}));
+            throw new Error(errData.error || `HTTP error! status: ${response.status}`);
+          }
+
+          if (!response.body) {
+            throw new Error("ReadableStream no soportado en esta respuesta");
+          }
+
+          const reader = response.body.getReader();
+          const decoder = new TextDecoder();
+          let buffer = "";
+
+          while (true) {
+            const { value, done } = await reader.read();
+            if (done) break;
+
+            buffer += decoder.decode(value, { stream: true });
+            const lines = buffer.split("\n\n");
+            buffer = lines.pop() || "";
+
+            for (const line of lines) {
+              const trimmed = line.trim();
+              if (!trimmed.startsWith("data: ")) continue;
+
+              const dataStr = trimmed.replace("data: ", "").trim();
+              if (dataStr === "[DONE]") {
+                break;
+              }
+
+              try {
+                const data = JSON.parse(dataStr);
+                if (data.text) {
+                  contentSpan.textContent += data.text;
+                  container.scrollTop = container.scrollHeight;
+                }
+              } catch (parseErr) {
+                console.error("Error parseando SSE data:", parseErr, dataStr);
+              }
+            }
+          }
+        } catch (err) {
+          console.error("Error:", err);
+          contentSpan.textContent = "⚠️ Error al conectar con el servidor: " + err.message;
+          contentSpan.classList.add("text-rose-400");
+        } finally {
+          input.disabled = false;
+          sendBtn.disabled = false;
+          input.focus();
+        }
+      });
+    </script>
+  </body>
+</html>
